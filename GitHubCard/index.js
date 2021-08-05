@@ -57,7 +57,7 @@ const followersArray = [];
     </div>
 */
 
-function createUserCard({object}) {
+function createUserCard({avatar_url, name, login, location, html_url, followers, following, bio}) {
   axios.get(`https://api.github.com/users/MMostella`)
   .then (res => {
     res.data.message.forEach(githubURL => {
@@ -71,38 +71,49 @@ function createUserCard({object}) {
   const cardInfo = document.createElement('div');
   const usersName = document.createElement('h3');
   const username = document.createElement('p');
-  const location = document.createElement('p');
+  const userLocation = document.createElement('p');
   const profile = document.createElement('p');
   const githubAdd = document.createElement('a');
-  const followers = document.createElement('p');
-  const following = document.createElement('p');
-  const bio = document.createElement('p');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
   
   card.appendChild(imgURL);
   card.appendChild(cardInfo);
   cardInfo.appendChild(usersName);
   cardInfo.appendChild(username);
-  cardInfo.appendChild(location);
+  cardInfo.appendChild(userLocation);
   cardInfo.appendChild(profile);
-  cardInfo.appendChild(followers);
-  cardInfo.appendChild(following);
-  cardInfo.appendChild(bio);
+  cardInfo.appendChild(userFollowers);
+  cardInfo.appendChild(userFollowing);
+  cardInfo.appendChild(userBio);
   profile.appendChild(githubAdd);
   
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   usersName.classList.add('name');
   username.classList.add('username');
+
+  imgURL.src = avatar_url;
+  usersName.textContent = name;
+  username.textContent = login;
+  userLocation.textContent = `Location: ${location}`;
+  profile.textContent = `Profile: ${githubAdd}`;
+  githubAdd.href = html_url;
+  githubAdd.textContent = html_url;
+  userFollowers.textContent = followers;
+  userFollowing.textContent = following;
+  userBio.textContent = bio;
   
   return card;
 
   }
 
-  function githubUser(){
+  function githubUser(login, html_url){
     axios.get(`https://api.github.com/users/MMostella`)
   .then (res => {
-    res.data.forEach(githubURL => {
-      const userCard = createUserCard({githubURL});
+    res.data.html_url.forEach(object => {
+      const userCard = createUserCard({object});
       entryPoint.appendChild(userCard);
     });
   })
