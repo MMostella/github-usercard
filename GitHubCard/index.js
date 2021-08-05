@@ -4,10 +4,12 @@
     https://api.github.com/users/<your name>
 */
 
-axios.get(`https://api.github.com/users/MMostella`)
-.then(res => {
-  console.log('Hiiii');
-})
+// axios.get(`https://api.github.com/users/MMostella`)
+// .then(res => {
+//   console.log('Hiiii');
+// })
+
+const entryPoint = document.querySelector('.cards');
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -33,35 +35,7 @@ axios.get(`https://api.github.com/users/MMostella`)
     user, and adding that card to the DOM.
 */
 
-const followersArray = [{object}];
-
-const card = document.createElement('div');
-const imgURL = document.createElement('img');
-const cardInfo = document.createElement('div');
-const usersName = document.createElement('h3');
-const username = document.createElement('p');
-const location = document.createElement('p');
-const profile = document.createElement('p');
-const githubAdd = document.createElement('a');
-const followers = document.createElement('p');
-const following = document.createElement('p');
-const bio = document.createElement('p');
-
-card.appendChild(imgURL);
-card.appendChild(cardInfo);
-cardInfo.appendChild(usersName);
-cardInfo.appendChild(username);
-cardInfo.appendChild(location);
-cardInfo.appendChild(profile);
-cardInfo.appendChild(followers);
-cardInfo.appendChild(following);
-cardInfo.appendChild(bio);
-profile.appendChild(githubAdd);
-
-card.classList.add('card');
-cardInfo.classList.add('card-info');
-usersName.classList.add('name');
-username.classList.add('username');
+const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -82,6 +56,57 @@ username.classList.add('username');
       </div>
     </div>
 */
+
+function createUserCard({object}) {
+  axios.get(`https://api.github.com/users/MMostella`)
+  .then (res => {
+    res.data.message.forEach(githubURL => {
+      
+    });
+  })
+  
+
+  const card = document.createElement('div');
+  const imgURL = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const usersName = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const githubAdd = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+  
+  card.appendChild(imgURL);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(usersName);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  profile.appendChild(githubAdd);
+  
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  usersName.classList.add('name');
+  username.classList.add('username');
+  
+  return card;
+
+  }
+
+  function githubUser(){
+    axios.get(`https://api.github.com/users/MMostella`)
+  .then (res => {
+    res.data.forEach(githubURL => {
+      const userCard = createUserCard({githubURL});
+      entryPoint.appendChild(userCard);
+    });
+  })
+  }
 
 /*
   List of LS Instructors Github username's:
