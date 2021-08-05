@@ -4,6 +4,14 @@
     https://api.github.com/users/<your name>
 */
 
+// const test = axios.get(`https://api.github.com/users/MMostella`)
+// .then(res => {
+// })
+// .catch(err => {
+//   console.error(err);
+// })
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -17,6 +25,36 @@
     and append the returned markup to the DOM as a child of .cards
 */
 
+const entryPoint = document.querySelector('.cards');
+
+// function githubUser(){
+//   axios.get(`https://api.github.com/users/MMostella`).then(res => {
+//     console.log(res);
+//     const userCard = createUserCard(res.data);
+//     entryPoint.appendChild(userCard);
+// })
+//   .catch(err => {
+//     console.error(err);
+//   })
+// }
+
+// githubUser();
+
+// function githubUser(userName){
+//   axios.get(`https://api.github.com/users/${userName}`).then(res => {
+//     console.log(res);
+//     const userCard = createUserCard(res.data);
+//     entryPoint.appendChild(userCard);
+// })
+//   .catch(err => {
+//     console.error(err);
+//   })
+// }
+
+// githubUser('MMostella');
+// githubUser('BrityHemming');
+
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -28,7 +66,18 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['MMostella', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+followersArray.forEach(userName => {
+  axios.get(`https://api.github.com/users/${userName}`).then(res => {
+    console.log(res);
+    const manyCards = createUserCard(res.data)
+    document.querySelector('.cards').appendChild(manyCards);
+  })
+  .catch(err => {
+    console.error(err);
+  })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +98,53 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function createUserCard({avatar_url, name, login, location, html_url, followers, following, bio}) {
+
+  const card = document.createElement('div');
+  const imgURL = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const usersName = document.createElement('h3');
+  const username = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const profile = document.createElement('p');
+  const githubAdd = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
+
+  card.appendChild(imgURL);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(usersName);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(userLocation);
+  profile.textContent = `Profile: `;
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(userFollowers);
+  cardInfo.appendChild(userFollowing);
+  cardInfo.appendChild(userBio);
+  profile.appendChild(githubAdd);
+  
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  usersName.classList.add('name');
+  username.classList.add('username');
+  githubAdd.classList.add('card-info');
+
+  imgURL.src = avatar_url;
+  usersName.textContent = `Name: ${name ? name : 'He Who Shall Not Be Named'}`;
+  username.textContent = `Username: ${login}`;
+  userLocation.textContent = ` Location: ${location ? location : 'Location Unknown'}`;
+  githubAdd.href = html_url;
+  githubAdd.target = '_blank';
+  githubAdd.textContent = html_url;
+  userFollowers.textContent = `Followers: ${followers ? followers : 'Riding Solo'}`;
+  userFollowing.textContent = `Following: ${following ? following : 'Not following anyone'}`;
+  userBio.textContent = `Bio: ${bio ? bio : 'Nothing to see here... move along'}`;
+
+  return card;
+
+  }
 
 /*
   List of LS Instructors Github username's:
